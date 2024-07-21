@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 public class Student {
     //define fields
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
