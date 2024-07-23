@@ -15,7 +15,7 @@ public class CoachController {
     private Coach anotherCoach;
 
     @Autowired
-    public CoachController(@Qualifier("tennisCoach") Coach coach,
+    public CoachController(@Qualifier("tennisCoach")Coach coach,
                            @Qualifier("tennisCoach")Coach anotherCoach){
         System.out.println("Constructor of: "+getClass().getSimpleName());
         myCoach = coach;
