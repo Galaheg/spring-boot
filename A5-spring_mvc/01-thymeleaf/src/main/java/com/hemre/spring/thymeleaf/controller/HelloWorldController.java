@@ -22,19 +22,19 @@ public class HelloWorldController {
     }
 
 
-    @GetMapping("/letsShoutDude")
-    public String shoutDude(HttpServletRequest request, Model model){
-
-        String theName = request.getParameter("studentName");
-
-        theName = theName.toUpperCase();
-
-        String result = "YO! " + theName;
-
-        model.addAttribute("message", result);
-
-        return "helloworld";
-    }
+//    @GetMapping("/letsShoutDude")
+//    public String shoutDude(HttpServletRequest request, Model model){
+//
+//        String theName = request.getParameter("studentName");
+//
+//        theName = theName.toUpperCase();
+//
+//        String result = "YO! " + theName;
+//
+//        model.addAttribute("message", result);
+//
+//        return "helloworld";
+//    }
 
     @PostMapping("/letsShoutDudeVol2")
     public String shoutDudeVol2(@RequestParam("studentName") String theName, Model model){

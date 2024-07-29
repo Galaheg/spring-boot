@@ -17,6 +17,33 @@
 
     <br><br>
 
+    Country:
+    <select th:field="*{country}">
+
+        <option th:each="tempCountry : ${countries}" th:value="${tempCountry}" th:text="${tempCountry}"/>
+        <!--
+        <option th:value="Brazil">Brazil</option>
+        <option th:value="Turkey">Turkey</option>
+        <option th:value="Germany">Germany</option>
+        <option th:value="America">America</option>
+        -->
+    </select>
+
+    <br><br>
+
+    <input type="radio" th:field="*{favLang}" th:each="tempLang : ${langs}" th:value="${tempLang}"
+    th:text="${tempLang}"/>
+    <!--
+    <input type="radio" th:field="*{favLang}" th:value="C" th:text="C"/>
+    <input type="radio" th:field="*{favLang}" th:value="Python" th:text="Python"/>
+    <input type="radio" th:field="*{favLang}" th:value="Cpp" th:text="Cpp"/>-->
+
+    <br><br>
+
+    <input type="checkbox" th:field="*{favOSes}" th:each="tempOS : ${OSes}" th:value="${tempOS}" th:text="${tempOS}"/>
+
+    <br><br>
+
     <input type="submit" value="Submit"/>
 
 </form>
