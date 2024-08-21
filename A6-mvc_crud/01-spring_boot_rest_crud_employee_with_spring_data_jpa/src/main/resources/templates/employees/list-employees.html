@@ -30,6 +30,7 @@
 
         <tbody>
         <tr th:each="tempEmployee : ${employees}">
+
             <td th:text="${tempEmployee.firstName}"/>
             <td th:text="${tempEmployee.lastName}"/>
             <td th:text="${tempEmployee.email}"/>
@@ -37,7 +38,6 @@
                 <a th:href="@{/employees/showFormForUpdate(employeeId=${tempEmployee.id})}" class="btn btn-info btn-sm">Update</a>
                 <a th:href="@{/employees/showFormForDelete(employeeId=${tempEmployee.id})}" class="btn btn-danger btn-sm"
                 onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
-
             </td>
         </tr>
         </tbody>
