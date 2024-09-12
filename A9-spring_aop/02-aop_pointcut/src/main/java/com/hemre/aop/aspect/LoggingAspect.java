@@ -2,10 +2,7 @@ package com.hemre.aop.aspect;
 
 import com.hemre.aop.Account;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -19,17 +16,55 @@ import java.util.List;
 @Order(-1)
 public class LoggingAspect {
 
+    @After("execution(* com.hemre.aop.dao.AccountDAO.findAccounts(..))")
+    public void afterFindAccountAdvice(JoinPoint joinPoint) {
+        String method = joinPoint.getSignature().toShortString();
+        System.out.println("\n========> Executing @After " +
+                method);
+    }
+
+    @AfterThrowing(
+            pointcut = "execution(* com.hemre.aop.dao.AccountDAO.findAccounts(..))",
+            throwing = "theExc"
+    )
+    public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Throwable theExc){
+
+        String method = joinPoint.getSignature().toShortString();
+        System.out.println("\n========> Executing @AfterThrowing " +
+                method);
+
+        System.out.println("\n========> Exception is @AfterReturn: " +
+                theExc);
+
+    }
+
 
     @AfterReturning(
             pointcut = "execution(* com.hemre.aop.dao.AccountDAO.findAccounts(..))",
             returning = "result")
     public void afterReturningAccountAdvice(JoinPoint theJoinPoint, List<Account> result){
+
         String method = theJoinPoint.getSignature().toShortString();
         System.out.println("\n========> Executing @AfterReturn" +
                 method);
 
         System.out.println("\n========> result is " +
                 result);
+
+        convertAccountNamesTOUpperCase(result);
+
+        System.out.println("\n========> After Upper result is " +
+                result);
+    }
+
+    private void convertAccountNamesTOUpperCase(List<Account> result) {
+
+        String dummyName;
+        for (Account acc : result){
+            dummyName = null;
+            dummyName = acc.getName().toUpperCase();
+            acc.setName(dummyName);
+        }
 
     }
 

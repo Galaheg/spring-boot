@@ -43,6 +43,16 @@ public class AccountDAOImpl implements AccountDAO{
 
     @Override
     public List<Account> findAccounts() {
+        return findAccounts(false);//dont throw exception
+    }
+
+    @Override
+    public List<Account> findAccounts(boolean tripWire) {
+
+        if(tripWire){
+            throw new RuntimeException("Nah.. try again");
+        }
+
         List<Account> myAccounts = new ArrayList<>();
 
         Account acc1 = new Account("Berfin", "platinum");
@@ -53,6 +63,7 @@ public class AccountDAOImpl implements AccountDAO{
         myAccounts.add(acc2);
         myAccounts.add(acc3);
         return myAccounts;
+
     }
 
     public void setServiceCode(String serviceCode) {

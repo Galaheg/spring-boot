@@ -22,9 +22,47 @@ public class AopApplication {
 		return runner -> {
 			System.out.println("IN RUNNER");
 			//demoTheBeforeAdvice(accountDAO);
-			demoTheBeforeAdvice(accountDAO, membershipDAO);
-			demoTheAfterReturningAdvice(accountDAO);
+			//demoTheBeforeAdvice(accountDAO, membershipDAO);
+			//demoTheAfterReturningAdvice(accountDAO);
+			//demoTheAfterThrowingAdvice(accountDAO);
+			demoTheAfterAdvice(accountDAO);
 		};
+	}
+
+	private void demoTheAfterAdvice(AccountDAO accountDAO) {
+
+		List<Account> accounts = null;
+
+		try{
+			boolean tripWire = true; // for academic purpose we simulate exception scene here
+			accounts = accountDAO.findAccounts(tripWire);
+		}
+		catch (Exception exc){
+			System.out.println("\n\nMain Program: Caught Exception: " +
+					exc);
+		}
+		System.out.println("\n\nAfter Advice");
+		System.out.println("------");
+		System.out.println(accounts);
+
+	}
+
+	private void demoTheAfterThrowingAdvice(AccountDAO accountDAO) {
+
+		List<Account> accounts = null;
+
+		try{
+			boolean tripWire = true; // for academic purpose we simulate exception scene here
+			accounts = accountDAO.findAccounts(tripWire);
+		}
+		catch (Exception exc){
+			System.out.println("\n\nMain Program: Caught Exception: " +
+					exc);
+		}
+		System.out.println("\n\nAfter Throwing");
+		System.out.println("------");
+		System.out.println(accounts);
+
 	}
 
 	private void demoTheAfterReturningAdvice(AccountDAO accountDAO) {
