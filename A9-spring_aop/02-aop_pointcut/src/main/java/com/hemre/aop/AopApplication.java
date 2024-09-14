@@ -2,6 +2,7 @@ package com.hemre.aop;
 
 import com.hemre.aop.dao.AccountDAO;
 import com.hemre.aop.dao.MembershipDAO;
+import com.hemre.aop.service.TrafficFortuneService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,15 +19,61 @@ public class AopApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(AccountDAO accountDAO, MembershipDAO membershipDAO){
+	public CommandLineRunner commandLineRunner(AccountDAO accountDAO,
+											   MembershipDAO membershipDAO,
+											   TrafficFortuneService trafficFortuneService){
 		return runner -> {
 			System.out.println("IN RUNNER");
 			//demoTheBeforeAdvice(accountDAO);
 			//demoTheBeforeAdvice(accountDAO, membershipDAO);
 			//demoTheAfterReturningAdvice(accountDAO);
 			//demoTheAfterThrowingAdvice(accountDAO);
-			demoTheAfterAdvice(accountDAO);
+			//demoTheAfterAdvice(accountDAO);
+			//demoTheAroundAdvice(accountDAO, trafficFortuneService);
+			//demoTheAroundAdviceHandleException(accountDAO, trafficFortuneService);
+			demoTheAroundAdviceRethrowException(accountDAO, trafficFortuneService);
 		};
+	}
+
+	private void demoTheAroundAdviceRethrowException(AccountDAO accountDAO, TrafficFortuneService trafficFortuneService) {
+
+		System.out.println("\nMain Program: demoTheAroundServiceHandleException");
+
+		boolean tripWire = true;
+
+		String data = null;
+		try {
+			data = trafficFortuneService.getFortune(tripWire);
+
+		}
+		catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+
+		System.out.println("\nMy Fortune is " + data);
+
+	}
+
+	private void demoTheAroundAdviceHandleException(AccountDAO accountDAO, TrafficFortuneService trafficFortuneService) {
+
+		System.out.println("\nMain Program: demoTheAroundServiceHandleException");
+
+		boolean tripWire = true;
+
+		String data = trafficFortuneService.getFortune(tripWire);
+
+		System.out.println("\nMy Fortune is " + data);
+
+	}
+
+	private void demoTheAroundAdvice(AccountDAO accountDAO, TrafficFortuneService trafficFortuneService) {
+
+		System.out.println("\nMain Program: demoTheAroundService");
+
+		String data = trafficFortuneService.getFortune();
+
+		System.out.println("\nMy Fortune is" + data);
+
 	}
 
 	private void demoTheAfterAdvice(AccountDAO accountDAO) {

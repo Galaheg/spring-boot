@@ -42,12 +42,12 @@ public class AccountDAOImpl implements AccountDAO{
     }
 
     @Override
-    public List<Account> findAccounts() {
+    public List<Account> findAccounts(){
         return findAccounts(false);//dont throw exception
     }
 
     @Override
-    public List<Account> findAccounts(boolean tripWire) {
+    public List<Account> findAccounts(boolean tripWire) throws RuntimeException {
 
         if(tripWire){
             throw new RuntimeException("Nah.. try again");

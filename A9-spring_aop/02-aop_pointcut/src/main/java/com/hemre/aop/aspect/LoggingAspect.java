@@ -2,6 +2,7 @@ package com.hemre.aop.aspect;
 
 import com.hemre.aop.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
@@ -16,6 +17,38 @@ import java.util.List;
 @Order(-1)
 public class LoggingAspect {
 
+
+
+    @Around("execution(* com.hemre.aop.service.*.getFortune(..))")
+    public Object aroundGetFortune(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
+        String method = proceedingJoinPoint.getSignature().toShortString();
+        System.out.println("\n========> Executing @Around " +
+                method);
+
+        long begin = System.nanoTime();
+
+        Object result = null;
+
+        try {
+            result = proceedingJoinPoint.proceed();
+        }
+        catch (Exception e){
+            System.out.println("In Advice.... Exception:" + e.getMessage());
+            System.out.println("\nInsıde Around advice caught exception modifying it....");
+
+            throw e; // rethrow exception
+
+        }
+
+        long end = System.nanoTime();
+        long duration = end - begin;
+
+        System.out.println("Duration is: " + duration / 1000 + " seconds");
+        return result;
+
+    }
+
     @After("execution(* com.hemre.aop.dao.AccountDAO.findAccounts(..))")
     public void afterFindAccountAdvice(JoinPoint joinPoint) {
         String method = joinPoint.getSignature().toShortString();
@@ -27,7 +60,7 @@ public class LoggingAspect {
             pointcut = "execution(* com.hemre.aop.dao.AccountDAO.findAccounts(..))",
             throwing = "theExc"
     )
-    public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Throwable theExc){
+    public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Throwable theExc) {
 
         String method = joinPoint.getSignature().toShortString();
         System.out.println("\n========> Executing @AfterThrowing " +
@@ -42,7 +75,7 @@ public class LoggingAspect {
     @AfterReturning(
             pointcut = "execution(* com.hemre.aop.dao.AccountDAO.findAccounts(..))",
             returning = "result")
-    public void afterReturningAccountAdvice(JoinPoint theJoinPoint, List<Account> result){
+    public void afterReturningAccountAdvice(JoinPoint theJoinPoint, List<Account> result) {
 
         String method = theJoinPoint.getSignature().toShortString();
         System.out.println("\n========> Executing @AfterReturn" +
@@ -60,7 +93,7 @@ public class LoggingAspect {
     private void convertAccountNamesTOUpperCase(List<Account> result) {
 
         String dummyName;
-        for (Account acc : result){
+        for (Account acc : result) {
             dummyName = null;
             dummyName = acc.getName().toUpperCase();
             acc.setName(dummyName);
@@ -77,10 +110,11 @@ public class LoggingAspect {
     //@Before("execution(public * add*(com.hemre.aop.Account))") // ozel parametre tipi
     //@Before("execution(public * add*(com.hemre.aop.Account, ..))") // ozel parametre tipi ve diger parametreler
 
-    @Before("com.hemre.aop.aspect.AppExpressions.forDaoPackageNoGetterSetter()") // ozel parametre tipi ve diger parametreler
-    public void beforeAddAccount(JoinPoint theJoinPoint){
+    @Before("com.hemre.aop.aspect.AppExpressions.forDaoPackageNoGetterSetter()")
+    // ozel parametre tipi ve diger parametreler
+    public void beforeAddAccount(JoinPoint theJoinPoint) {
         System.out.println("\nExecuting @Before advice on method");
-        MethodSignature methodSignature =(MethodSignature) theJoinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) theJoinPoint.getSignature();
 
         // display the method signature
         System.out.println("Method: " + methodSignature);
@@ -88,9 +122,9 @@ public class LoggingAspect {
         // display method arguments
         Object[] args = theJoinPoint.getArgs();
 
-        for (Object o :args){
+        for (Object o : args) {
             System.out.println(o);//prints hashcode
-            if (o instanceof Account){
+            if (o instanceof Account) {
                 Account theAccount = (Account) o;
                 System.out.println(((Account) o).getName() + " " +
                         ((Account) o).getLevel());
